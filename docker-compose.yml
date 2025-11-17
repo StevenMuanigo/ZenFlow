@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+    depends_on:
+      - user-service
+      - catalog-service
+      - nutrition-service
+      - workout-service
+      - progress-service
+      - notification-service
+      - reminder-service
+
+  user-service:
+    build:
+      context: ./UserService
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ZenFlowUserDb;User=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true
+      - Jwt__Key=ZenFlowSecretKeyThatIsLongEnoughToBeSecure12345
+      - Jwt__Issuer=ZenFlowIssuer
+      - Jwt__Audience=ZenFlowAudience
+    depends_on:
+      - sqlserver
+
+  catalog-service:
+    build:
+      context: ./CatalogService
+      dockerfile: Dockerfile
+    ports:
+      - "5002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+      - ConnectionStrings__MongoDbConnection=mongodb://mongodb:27017
+      - Jwt__Key=ZenFlowSecretKeyThatIsLongEnoughToBeSecure12345
+      - Jwt__Issuer=ZenFlowIssuer
+      - Jwt__Audience=ZenFlowAudience
+    depends_on:
+      - mongodb
+
+  nutrition-service:
+    build:
+      context: ./NutritionService
+      dockerfile: Dockerfile
+    ports:
+      - "5003:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+      - ConnectionStrings__MongoDbConnection=mongodb://mongodb:27017
+      - Jwt__Key=ZenFlowSecretKeyThatIsLongEnoughToBeSecure12345
+      - Jwt__Issuer=ZenFlowIssuer
+      - Jwt__Audience=ZenFlowAudience
+      - Gemini__ApiKey=AIzaSyAW3xyCMiD-WXkM-RnAPGbe7LQQ8lH-jIo
+    depends_on:
+      - mongodb
+
+  workout-service:
+    build:
+      context: ./WorkoutService
+      dockerfile: Dockerfile
+    ports:
+      - "5004:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+      - ConnectionStrings__MongoDbConnection=mongodb://mongodb:27017
+      - Jwt__Key=ZenFlowSecretKeyThatIsLongEnoughToBeSecure12345
+      - Jwt__Issuer=ZenFlowIssuer
+      - Jwt__Audience=ZenFlowAudience
+    depends_on:
+      - mongodb
+
+  progress-service:
+    build:
+      context: ./ProgressService
+      dockerfile: Dockerfile
+    ports:
+      - "5005:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+      - ConnectionStrings__MongoDbConnection=mongodb://mongodb:27017
+      - Jwt__Key=ZenFlowSecretKeyThatIsLongEnoughToBeSecure12345
+      - Jwt__Issuer=ZenFlowIssuer
+      - Jwt__Audience=ZenFlowAudience
+    depends_on:
+      - mongodb
+
+  notification-service:
+    build:
+      context: ./NotificationService
+      dockerfile: Dockerfile
+    ports:
+      - "5006:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+      - ConnectionStrings__MongoDbConnection=mongodb://mongodb:27017
+      - Jwt__Key=ZenFlowSecretKeyThatIsLongEnoughToBeSecure12345
+      - Jwt__Issuer=ZenFlowIssuer
+      - Jwt__Audience=ZenFlowAudience
+    depends_on:
+      - mongodb
+
+  reminder-service:
+    build:
+      context: ./ReminderService
+      dockerfile: Dockerfile
+    ports:
+      - "5007:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Container
+      - ConnectionStrings__MongoDbConnection=mongodb://mongodb:27017
+      - Jwt__Key=ZenFlowSecretKeyThatIsLongEnoughToBeSecure12345
+      - Jwt__Issuer=ZenFlowIssuer
+      - Jwt__Audience=ZenFlowAudience
+    depends_on:
+      - mongodb
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  sqlserver_data:
+  mongodb_data:

@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  user-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./UserService:/src
+    build:
+      context: ./UserService
+      dockerfile: Dockerfile.dev
+
+  catalog-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./CatalogService:/src
+    build:
+      context: ./CatalogService
+      dockerfile: Dockerfile.dev
+
+  nutrition-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./NutritionService:/src
+    build:
+      context: ./NutritionService
+      dockerfile: Dockerfile.dev
+
+  workout-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./WorkoutService:/src
+    build:
+      context: ./WorkoutService
+      dockerfile: Dockerfile.dev
+
+  progress-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./ProgressService:/src
+    build:
+      context: ./ProgressService
+      dockerfile: Dockerfile.dev
+
+  notification-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./NotificationService:/src
+    build:
+      context: ./NotificationService
+      dockerfile: Dockerfile.dev
+
+  reminder-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./ReminderService:/src
+    build:
+      context: ./ReminderService
+      dockerfile: Dockerfile.dev
+
+  api-gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./ApiGateway:/src
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile.dev
